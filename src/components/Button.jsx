@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '../context/ThemeContext';
 
 /**
  * Button component with different variants
@@ -20,16 +21,28 @@ const Button = ({
   className = '',
   ...rest 
 }) => {
-  // Base classes
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors';
+  const { theme } = useTheme();
   
-  // Variant classes
+  // Base classes
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200';
+  
+  // Variant classes with theme support
   const variantClasses = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-    secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-500',
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
-    success: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
-    warning: 'bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-500',
+    primary: theme === 'dark' 
+      ? 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 focus:ring-offset-gray-800' 
+      : 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 focus:ring-offset-white',
+    secondary: theme === 'dark'
+      ? 'bg-gray-600 hover:bg-gray-500 text-white focus:ring-gray-500 focus:ring-offset-gray-800'
+      : 'bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-500 focus:ring-offset-white',
+    danger: theme === 'dark'
+      ? 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 focus:ring-offset-gray-800'
+      : 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 focus:ring-offset-white',
+    success: theme === 'dark'
+      ? 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500 focus:ring-offset-gray-800'
+      : 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500 focus:ring-offset-white',
+    warning: theme === 'dark'
+      ? 'bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-500 focus:ring-offset-gray-800'
+      : 'bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-500 focus:ring-offset-white',
   };
   
   // Size classes
@@ -40,7 +53,9 @@ const Button = ({
   };
   
   // Disabled classes
-  const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
+  const disabledClasses = disabled 
+    ? 'opacity-50 cursor-not-allowed' 
+    : 'cursor-pointer';
   
   // Combine all classes
   const buttonClasses = `${baseClasses} ${variantClasses[variant] || variantClasses.primary} ${sizeClasses[size] || sizeClasses.md} ${disabledClasses} ${className}`;
@@ -66,4 +81,4 @@ Button.propTypes = {
   className: PropTypes.string,
 };
 
-export default Button; 
+export default Button;
